@@ -82,7 +82,7 @@ button,.upload {
   color: #14294d;
   padding: 10px 14px
 }
-button: hover,.upload:hover {
+button:hover,.upload:hover {
   background: #edf4fc
 }
 button.primary {
@@ -90,7 +90,7 @@ button.primary {
   color: white;
   border-color: #174da0
 }
-button: disabled {
+button:disabled {
   opacity: .4;
   cursor: not-allowed
 }
@@ -159,133 +159,32 @@ button: disabled {
   overflow: auto;
   padding: 8px 0
 }
-.license {
-  width: 740px;
-  height: 466px;
-  background: white;
-  border: 5px solid #102c61;
-  border-radius: 18px;
-  padding: 20px;
-  position: relative;
-  overflow: hidden;
-  color: #102c61
-}
-.lic-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 2px solid #102c61;
-  padding-bottom: 12px
-}
-.lic-title {
-  font-size: 29px;
-  font-weight: 900;
-  letter-spacing: 2px
-}
-.lic-title em {
-  font-style: normal;
-  color: #e14560
-}
-.lic-sub {
-  font-size: 8px;
-  letter-spacing: 4px;
-  margin-top: 5px
-}
-.badge {
-  background: #102c61;
-  color: white;
-  border-radius: 6px;
-  padding: 8px;
-  font-size: 12px
-}
-.lic-body {
-  display: grid;
-  grid-template-columns: 1fr 134px 212px;
-  gap: 14px;
-  padding-top: 15px
-}
-.field {
-  border-bottom: 1px solid #ccd5e3;
-  padding: 8px 0;
-  font-size: 11px
-}
-.name {
-  font-size: 25px;
-  font-weight: bold;
-  margin: 8px 0;
-  overflow-wrap: anywhere
-}
-.photo {
-  width: 134px;
-  height: 177px;
-  background: #edf2f8;
-  border-radius: 9px;
-  border: 1px solid #cbd6e5;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  color: #718198
-}
-.photo img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover
-}
-.qual-title {
-  font-size: 11px;
-  background: #102c61;
-  color: white;
-  padding: 7px;
-  text-align: center;
-  border-radius: 5px
-}
-.qual {
-  font-size: 10px;
-  padding: 5px;
-  border-bottom: 1px dotted #bcc9db;
-  color: #8491a3;
-  display: flex;
-  justify-content: space-between
-}
-.qual.earned {
-  color: #123c77;
-  font-weight: bold;
-  background: #edf6ff
-}
-.qual b {
-  color: #147365
-}
-.promise {
-  font-size: 11px;
-  line-height: 2;
-  margin-top: 15px
-}
-.gold {
-  background: #ffdd63;
-  padding: 8px;
-  margin-top: 12px;
-  font-size: 11px
-}
-.lic-foot {
-  position: absolute;
-  bottom: 17px;
-  left: 20px;
-  right: 20px;
-  display: flex;
-  justify-content: space-between;
-  font-size: 10px;
-  color: #496582
-}
-.sea {
-  height: 7px;
-  background: linear-gradient(90deg,#123769,#2186ba,#a4e4e7);
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0
-}
+/* 参考台紙の比率（3:2）と文字配列に合わせた免許証 */
+.license { width:900px; height:600px; border:5px solid #0a245f; border-radius:16px; padding:10px; background:#fff; position:relative; overflow:hidden; color:#080808; font-family:'Yu Gothic',Meiryo,sans-serif; }
+.lic-head { height:92px; display:flex; gap:10px; align-items:flex-start; }
+.logo-placeholder { width:66px; height:70px; flex:none; }
+.logo-placeholder,.event-logo-placeholder,.landscape-placeholder { border:1px solid #a9b4ca; color:#6c7890; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:normal; }
+.title-block { padding-top:3px; white-space:nowrap; }
+.lic-title { font-size:46px; line-height:1.25; letter-spacing:2px; font-weight:900; color:#092260; }
+.title-oshi i {font-style:normal;} .title-oshi i:nth-child(1){color:#ff1747;} .title-oshi i:nth-child(2){color:#ff8610;} .title-oshi i:nth-child(3){color:#29920a;} .title-oshi i:nth-child(4){color:#08265c;} .title-license{color:#360c4f;}
+.lic-sub { font-size:10px; letter-spacing:4px; text-align:center; margin-top:3px; font-weight:700; }
+.issue-block { line-height:1.3; padding-top:3px; margin-left:4px; min-width:124px; font-size:14px; } .badge{background:#071f5b;color:white;border-radius:7px;padding:5px 8px;letter-spacing:1px;font-weight:700;margin-bottom:6px;} .issue-block>span{display:block;font-size:12px;} .issue-block strong{font-size:16px;white-space:nowrap;}
+.event-logo-placeholder { margin-left:auto; width:68px; height:68px; border-radius:50%; text-align:center; flex:none; }
+.lic-body { display:grid; grid-template-columns:415px 198px 236px; gap:8px; }
+.details-column { min-width:0; }
+.identity-table { border:1px solid #242275; border-radius:9px 9px 0 0; overflow:hidden; }
+.identity-name { display:grid;grid-template-columns:73px 201px 1fr;height:50px; }
+.field-label { color:#10176a; font-size:17px; font-weight:700;display:flex;justify-content:center;align-items:center;border-right:1px solid #242275;letter-spacing:3px; }
+.name { font-size:24px; font-weight:700; display:flex;align-items:center;padding:0 14px;overflow-wrap:anywhere;line-height:1.1; }
+.birthday-cell { border-left:1px solid #242275;padding:8px;font-size:11px;display:flex;flex-direction:column;justify-content:center;gap:4px; } .birthday-cell b{color:#10176a;letter-spacing:2px;} .birthday-cell span{white-space:nowrap;font-size:10px;}
+.identity-row { display:grid; grid-template-columns:73px 1fr; min-height:44px;border-top:1px solid #242275; } .address-row{height:56px;} .field-value {padding:9px 14px;display:flex;align-items:center;font-size:16px;font-weight:700;letter-spacing:1px;line-height:1.5;overflow-wrap:anywhere;}
+.gold { display:flex;align-items:center;gap:18px;height:45px;background:#ffd500;border-top:1px solid #242275;padding:0 10px;white-space:nowrap; } .gold>b{font-size:14px;letter-spacing:1px;} .gold>div{font-size:14px;font-weight:700;} .gold strong{font-size:29px;} .gold small{font-size:12px;}
+.promise{display:flex;align-items:center;gap:12px;margin:17px 7px 18px;} .navy-label{background:#08245e;border-radius:8px;color:white;padding:9px 6px;flex:none;font-size:17px;font-weight:700;line-height:1.65;text-align:center;} .promise-lines p{font-size:14px;font-weight:700;margin:5px 0;white-space:nowrap;letter-spacing:.25px;} .promise-lines p span{font-size:20px;margin-right:7px;color:#ff1747;} .promise-lines p:nth-child(2) span{color:#279600;} .promise-lines p:nth-child(3) span{color:#0079eb;}
+.number-row{display:flex;align-items:center;gap:13px;margin:0 7px;font-size:17px;} .number-row strong{font-size:23px;letter-spacing:-.7px;} .number-row .navy-label{padding:5px 8px;}
+.landscape-placeholder{height:90px;width:85%;margin-top:16px;border-radius:5px;}
+.portrait-column{padding-top:10px;} .photo{width:198px;height:298px;border:1px solid #242275;border-radius:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;color:#7a8496;background:white;font-size:13px;} .photo img{width:100%;height:100%;object-fit:cover;} .official-seal{border:1px solid red;color:red;border-radius:7px;margin:17px auto 0;width:100px;height:93px;text-align:center;font-size:17px;line-height:1.55;padding:7px 0;}
+.qualifications-column{border:1px solid #242275;border-radius:9px;overflow:hidden;align-self:start;} .qual-title{background:#071f5b;color:white;text-align:center;font-size:14px;height:23px;line-height:23px;letter-spacing:1px;} .qual{height:46px;display:flex;align-items:center;padding:4px 6px;border-bottom:1px dashed #35327c;gap:7px;color:#080808;} .qual:last-child{border-bottom:0;} .qual-icon{width:36px;height:33px;border:1px solid #c3cad6;border-radius:3px;flex:none;} .qual-text{font-size:11px;font-weight:700;white-space:nowrap;letter-spacing:-.4px;flex:1;} .stamp-circle{width:34px;height:34px;border:1px dotted #444;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;font-size:10px;color:#c22;} .qual.earned .stamp-circle{border:2px solid #c22;transform:rotate(-12deg);font-weight:700;}
+.lic-foot{position:absolute;bottom:17px;right:15px;color:#101467;font-size:12px;letter-spacing:.5px;font-weight:700;} .lic-foot span{color:#eea000;font-size:22px;vertical-align:middle;} .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);}
 .toolbar {
   display: flex;
   gap: 10px;
@@ -319,7 +218,7 @@ dialog {
   max-width: 480px;
   width: 90%
 }
-dialog: :backdrop {
+dialog::backdrop {
   background: #102039aa
 }
 .danger {
@@ -399,13 +298,13 @@ input[type=range] {
     overflow: visible
   }
   .license {
-    transform: scale(.756);
+    transform: scale(.6215);
     transform-origin: top left;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact
   }
   body[data-size=card] .license {
-    transform: scale(.437)
+    transform: scale(.3595)
   }
 
 }
@@ -442,3 +341,10 @@ input[type=range] {
   }
 
 }
+
+/* 長い資格名と氏名も各枠の内側に収める */
+.qual {gap:5px;} .qual-icon{width:32px;} .qual-text{min-width:0;font-size:10px;letter-spacing:-.6px;} .qual:has(.qual-text[title]), .qual:nth-child(6){gap:4px;} .qual:nth-child(6) .qual-text,.qual:last-child .qual-text{font-size:9px;} .stamp-circle{width:32px;height:34px;} .name{max-height:50px;overflow:hidden;}
+
+.official-seal{font-size:15px;line-height:1.65;} .name.long-name{font-size:16px;}
+
+.fixed-address{margin-top:14px;} .fixed-address p{font-size:14px;line-height:1.7;margin:0;padding:10px;background:#f2f5fa;border-radius:8px;} #lic-address{display:block;white-space:pre-line;font-size:14px;letter-spacing:0;line-height:1.4;padding-top:8px;padding-bottom:8px;}

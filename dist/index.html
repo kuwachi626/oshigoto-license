@@ -72,9 +72,10 @@
                 01　受付・写真
               </h2>
               <label for="nickname">
-                ニックネーム
+                氏名・ニックネーム
               </label>
               <input id="nickname" maxlength="16" placeholder="例：はる">
+              <div class="fixed-address"><label>住所（固定）</label><p>福井県丹生郡越前町西田中13-5-1<br>越前町役場</p></div><label for="birthday" style="margin-top:14px">生年月日（任意）</label><input id="birthday" type="date">
               <div class="row" style="margin-top:14px">
                 <label class="upload">
                   写真を選ぶ
@@ -129,10 +130,10 @@
               <div class="row">
                 <select id="size" aria-label="印刷サイズ">
                   <option value="large">
-                    大きめ：約148 × 93 mm
+                    大きめ：約148 × 99 mm
                   </option>
                   <option value="card">
-                    カード：約85.6 × 53.9 mm
+                    カード：約85.6 × 57.1 mm
                   </option>
                 </select>
                 <button id="print" class="primary">
@@ -146,78 +147,28 @@
             <div class="preview-wrap">
               <article id="license" class="license">
                 <div class="lic-head">
-                  <div>
-                    <div class="lic-title">
-                      越前町
-                      <em>
-                        推しごと
-                      </em>
-                      免許証
-                    </div>
-                    <div class="lic-sub">
-                      ECHIZEN TOWN OSHIGOTO LICENSE
-                    </div>
-                  </div>
-                  <div class="badge">
-                    イベント記念証
-                  </div>
+                  <div class="logo-placeholder">町章</div>
+                  <div class="title-block"><div class="lic-title">越前町<span class="title-oshi"><i>推</i><i>し</i><i>ご</i><i>と</i></span><span class="title-license">免許証</span></div><div class="lic-sub">ECHIZEN TOWN OSHIGOTO LICENSE</div></div>
+                  <div class="issue-block"><div class="badge">越前町限定発行</div><span>発行日</span><strong id="lic-date"></strong></div>
+                  <div class="event-logo-placeholder">イベント<br>ロゴ</div>
                 </div>
                 <div class="lic-body">
-                  <div>
-                    <div class="field">
-                      ニックネーム
-                      <div id="lic-name" class="name">
-                        なまえ
-                      </div>
+                  <div class="details-column">
+                    <div class="identity-table">
+                      <div class="identity-name"><div class="field-label">氏 名</div><div id="lic-name" class="name">なまえ</div><div class="birthday-cell"><b>生年月日</b><span id="lic-birthday">年　月　日 生</span></div></div>
+                      <div class="identity-row address-row"><div class="field-label">住 所</div><div id="lic-address" class="field-value"></div></div>
+                      <div class="identity-row"><div class="field-label">交 付</div><div id="lic-issued-date" class="field-value"></div></div>
+                      <div class="gold"><b>有効期限</b><div id="lic-expiry"></div></div>
                     </div>
-                    <div class="field">
-                      番号
-                      <span id="lic-id">
-                        受付前
-                      </span>
-                    </div>
-                    <div class="field">
-                      発行日
-                      <span id="lic-date">
-                      </span>
-                    </div>
-                    <div class="gold">
-                      推しごとフェス2027 参加記念
-                    </div>
-                    <div class="promise">
-                      ★ いろいろなお仕事をやってみます！
-                      <br>
-                      ★「これ好き！」な推しごとを見つけます！
-                      <br>
-                      ★ 越前町の働く人を応援します！
-                    </div>
+                    <div class="promise"><div class="navy-label">推しごと<br>の条件等</div><div class="promise-lines"><p><span>★</span>いろいろなお仕事をやってみます！</p><p><span>★</span>「これ好き！」な推しごとを見つけます！</p><p><span>★</span>越前町の働く人を応援します！</p></div></div>
+                    <div class="number-row"><span class="navy-label">番 号</span><span>第</span><strong id="lic-id">受付前</strong><span>号</span></div>
+                    <div class="landscape-placeholder">風景イラスト欄</div>
                   </div>
-                  <div>
-                    <div id="photo" class="photo">
-                      顔写真
-                    </div>
-                    <p style="font-size:10px;text-align:center">
-                      きみの「好き」が、未来になる。
-                    </p>
-                  </div>
-                  <div>
-                    <div class="qual-title">
-                      体験したお仕事・認定資格
-                    </div>
-                    <div id="qualifications">
-                    </div>
-                  </div>
+                  <div class="portrait-column"><div id="photo" class="photo">顔写真</div><div class="official-seal">越 前 町<br>推しごと<br>フェス長官印</div></div>
+                  <div class="qualifications-column"><div class="qual-title">体験したお仕事（スタンプ欄）</div><div id="qualifications"></div></div>
                 </div>
-                <div class="lic-foot">
-                  <span>
-                    越前町 推しごとフェス2027
-                  </span>
-                  <span id="achievement">
-                    体験したお仕事 0 / 10
-                  </span>
-                </div>
-                <div class="sea">
-                </div>
+                <div class="lic-foot"><span>✦</span> いろいろなお仕事を体験して、きみだけのオリジナル免許証を完成させよう！ <span>✦</span></div>
+                <span id="achievement" class="visually-hidden"></span>
               </article>
             </div>
             <p class="muted">

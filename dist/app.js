@@ -1,6 +1,7 @@
 // DOMの参照と職種マスター
 const getElement = id => document.getElementById(id);
 // 各行は「職種名・認定資格の呼称・表示アイコン」。順番は保存データと対応する。
+const LICENSE_ADDRESS = '福井県丹生郡越前町西田中13-5-1\n越前町役場';
 const jobs = [
   ['漁師', 'フィッシャー', '⚓'],
   ['エンジニア', 'エンジニア', '▣'],
@@ -73,10 +74,30 @@ function handleFormChange() {
   renderLicense();
   getElement('save-state').textContent = '変更内容は未保存です。「受付内容を保存」で保存できます。'
 }
+function japaneseDate(value, era = false) {
+  if (!value) return '';
+  const [year, month, day] = value.split('-').map(Number);
+  return (era && year >= 2019 ? '令和 ' + (year - 2018) : year) + '年 ' + month + '月 ' + day + '日';
+}
 function renderLicense() {
   getElement('lic-name').textContent = getElement('nickname').value.trim() || 'なまえ';
-  getElement('lic-id').textContent = current ? 'ECH 2027-' + String(current).padStart(3, '0') : '受付前';
-  getElement('lic-date').textContent = getElement('date').value.replaceAll('-', ' / ');
+  getElement('lic-name').classList.toggle('long-name', getElement('lic-name').textContent.length > 8);
+  getElement('lic-id').textContent = current ? 'ECH ' + getElement('date').value.replaceAll('-', '') + String(current).padStart(3, '0') : '受付前';
+  const date = getElement('date').value;
+  getElement('lic-date').textContent = japaneseDate(date);
+  getElement('lic-issued-date').textContent = japaneseDate(date, true);
+  getElement('lic-address').textContent = LICENSE_ADDRESS;
+  getElement('lic-birthday').textContent = japaneseDate(getElement('birthday').value, true) + (getElement('birthday').value ? ' 生' : '年　月　日 生');
+  const expiry = getElement('lic-expiry');
+  expiry.replaceChildren();
+  if (date) {
+    const [year, month, day] = date.split('-').map(Number);
+    const lastDay = new Date(year + 1, month, 0).getDate();
+    const yearLabel = document.createElement('strong');
+    yearLabel.textContent = year + 1;
+    const era = year + 1 >= 2019 ? '（令和' + (year + 1 - 2018) + '年）' : '';
+    expiry.append(yearLabel, document.createTextNode(' 年 ' + era + ' ' + month + '月 ' + Math.min(day, lastDay) + '日まで有効'));
+  }
   getElement('photo').replaceChildren();
   if (photo) {
     const img = new Image();
@@ -87,15 +108,25 @@ function renderLicense() {
   } else getElement('photo').textContent = '顔写真';
   const s = getSelectedJobIndexes();
   getElement('qualifications').replaceChildren();
-  jobs.forEach((j, i) => {
+  // 保存済みの職種インデックスは維持し、台紙の表示順だけを合わせる。
+  const qualificationRows = [[0], [1], [4], [5], [9], [2], [3], [6], [7, 8]];
+  qualificationRows.forEach(indexes => {
+    const earned = indexes.filter(i => s.includes(i));
     const d = document.createElement('div');
-    d.className = 'qual' + (s.includes(i) ? ' earned' : '');
+    d.className = 'qual' + (earned.length ? ' earned' : '');
+    const icon = document.createElement('span');
+    icon.className = 'qual-icon';
+    icon.setAttribute('aria-label', 'イラスト欄');
     const label = document.createElement('span');
-    label.textContent = j[2] + ' ジュニア・' + j[1];
+    label.className = 'qual-text';
+    label.textContent = 'ジュニア・' + (indexes.length > 1 ? 'セーフティヒーロー' : jobs[indexes[0]][1]) + '認定';
+    if (indexes.length > 1) label.title = '警察・消防は個別に認定：' + (earned.map(i => jobs[i][0]).join('・') || '未認定');
     const mark = document.createElement('b');
-    mark.textContent = s.includes(i) ? '認定 ✓' : '—';
-    d.append(label, mark);
-    getElement('qualifications').append(d)
+    mark.className = 'stamp-circle';
+    mark.textContent = earned.length ? (indexes.length > 1 ? earned.map(i => jobs[i][0] === '消防士' ? '消防' : jobs[i][0]).join('・') : '認定') : '';
+    mark.setAttribute('aria-label', earned.length ? label.title || '認定済み' : '未認定');
+    d.append(icon, label, mark);
+    getElement('qualifications').append(d);
   });
   getElement('achievement').textContent = '体験したお仕事 ' + s.length + ' / 10';
   getElement('issued').disabled = !current;
@@ -123,6 +154,7 @@ function loadParticipant(r) {
   current = r?.id || null;
   photo = r?.photo || '';
   getElement('nickname').value = r?.name || '';
+  getElement('birthday').value = r?.birthday || '';
   getElement('date').value = r?.date || '2027-03-07';
   getElement('zoom').value = r?.zoom || 1;
   getElement('pos').value = r?.pos ?? 50;
@@ -155,7 +187,7 @@ async function saveParticipant() {
   const id = current || Math.max(0, ...records.map(r => r.id)) + 1;
   const prior = records.find(r => r.id === id);
   const r = {
-    id, name, photo, date: getElement('date').value, zoom: Number(getElement('zoom').value), pos: Number(getElement('pos').value), jobs: getSelectedJobIndexes(), issued: prior?.issued || false
+    id, name, photo, address: LICENSE_ADDRESS, birthday: getElement('birthday').value, date: getElement('date').value, zoom: Number(getElement('zoom').value), pos: Number(getElement('pos').value), jobs: getSelectedJobIndexes(), issued: prior?.issued || false
   };
   records = records.filter(x => x.id !== id).concat(r).sort((a, b) => a.id - b.id);
   try {
@@ -233,7 +265,7 @@ getElement('camera-dialog').addEventListener('cancel', stopCamera);
 
 // 入力・印刷・受け渡しのイベント
 getElement('file').onchange = e => setParticipantPhoto(e.target.files[0]);
-['nickname', 'date', 'zoom', 'pos'].forEach(id => getElement(id).addEventListener('input', handleFormChange));
+['nickname', 'birthday', 'date', 'zoom', 'pos'].forEach(id => getElement(id).addEventListener('input', handleFormChange));
 getElement('search').oninput = renderParticipantList;
 getElement('new').onclick = () => loadParticipant(null);
 getElement('save').onclick = async() => {
@@ -264,7 +296,8 @@ getElement('issued').onclick = async() => {
 getElement('demo').onclick = () => {
   if (!confirmDiscardChanges()) return;
   current = null;
-  getElement('nickname').value = 'はる（見本）';
+  getElement('nickname').value = '越前　太郎';
+  getElement('birthday').value = '';
   getElement('date').value = '2027-03-07';
   const c = document.createElement('canvas');
   c.width = 300;
@@ -321,6 +354,8 @@ function isValidParticipant(r) {
   return r
     && Number.isInteger(r.id) && r.id > 0
     && typeof r.name === 'string' && r.name.trim().length > 0 && r.name.length <= 16
+    && (r.address === undefined || (typeof r.address === 'string' && r.address.length <= 60))
+    && (r.birthday === undefined || r.birthday === '' || (typeof r.birthday === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(r.birthday)))
     && typeof r.photo === 'string'
     && /^data:image\/(jpeg|png);base64,[A-Za-z0-9+/=]+$/.test(r.photo)
     && r.photo.length < 2000000
