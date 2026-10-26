@@ -298,13 +298,33 @@ input[type=range] {
     overflow: visible
   }
   .license {
-    transform: scale(.6215);
+    /* 900 × 600 px の台紙を、96 dpi 基準で指定の実寸に合わせる */
+    transform: scale(.382152231, .346456693);
     transform-origin: top left;
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact
   }
   body[data-size=card] .license {
-    transform: scale(.3595)
+    transform: scale(.359475066, .340157480)
+  }
+  body[data-size=business] {
+    width: 55mm;
+    height: 91mm;
+    overflow: hidden
+  }
+  body[data-size=business] .preview-wrap {
+    position: relative;
+    width: 55mm;
+    height: 91mm;
+    overflow: hidden;
+    break-inside: avoid
+  }
+  body[data-size=business] .license {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* 横型のデザインを時計回りに回転し、55 × 91 mm の用紙に収める */
+    transform: translateX(55mm) rotate(90deg) scale(.382152231, .346456693)
   }
 
 }
