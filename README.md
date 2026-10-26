@@ -9,6 +9,20 @@
 
 ビルドやライブラリのインストールは不要です。
 
+## GitHub Pagesで公開
+
+公開URL: https://kuwachi626.github.io/oshigoto-license/
+
+リポジトリの **Settings → Pages → Build and deployment → Source** を **GitHub Actions** に設定します。
+`.github/workflows/pages.yml` が `main` への更新時に `dist` のみを公開します。ビルド処理は不要で、`server.cjs` は配信しません。
+
+手動で再公開する場合は **Actions → Deploy static site to Pages → Run workflow** から `main` を選んで実行してください。他のブランチでは公開ジョブを実行しません。
+実行結果と公開URLはActionsの実行画面で確認できます。公開に失敗した場合は同画面のログとSettings → PagesのSource設定を確認してください。
+
+`index.html` からCSSとJavaScriptを相対パスで読み込むため、`/oshigoto-license/` 配下で動作します。
+写真・参加者データは引き続き利用者のブラウザのIndexedDBに保存され、公開ファイルには含まれません。
+ローカル版と公開版では保存領域が異なるため、移行時はローカル版でバックアップを保存し、公開版で復元してください。
+
 ## 起動と使い方
 
 `dist/index.html` をブラウザで開くか、Node.js がある場合はこのフォルダで `node server.cjs` を実行し http://127.0.0.1:4173 を開いてください。
