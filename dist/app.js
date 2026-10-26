@@ -1,6 +1,7 @@
 // DOMの参照と職種マスター
 const getElement = id => document.getElementById(id);
 // 各行は「職種名・認定資格の呼称・表示アイコン」。順番は保存データと対応する。
+const LICENSE_ADDRESS = '福井県丹生郡越前町西田中13-5-1\n越前町役場';
 const jobs = [
   ['漁師', 'フィッシャー', '⚓'],
   ['エンジニア', 'エンジニア', '▣'],
@@ -12,6 +13,19 @@ const jobs = [
   ['警察', 'ポリス', '★'],
   ['消防士', 'ファイアファイター', '♨'],
   ['建設', 'ビルダー', '⌂']
+];
+
+// 各職種の独立したSVG。原本は dist/assets/jobs/ に保存。
+const jobIllustrations = [
+  "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\" fill=\"none\"><path fill=\"#0879cf\" d=\"M5 36h54L49 53H17z\"/><path fill=\"#0a53a2\" d=\"M17 20h29v16H17z\"/><path fill=\"#158fe1\" d=\"M24 9h14v11H24z\"/><path fill=\"#fff\" d=\"M22 24h7v7h-7zm12 0h7v7h-7z\"/><path stroke=\"#fff\" stroke-width=\"2\" d=\"M9 58q7-5 14 0t14 0t14 0\"/><circle fill=\"#fff\" cx=\"18\" cy=\"42\" r=\"2\"/></svg>",
+  "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\" fill=\"none\"><rect x=\"6\" y=\"9\" width=\"52\" height=\"35\" rx=\"4\" fill=\"#329519\"/><rect x=\"11\" y=\"14\" width=\"42\" height=\"24\" rx=\"1\" fill=\"#eaf8ed\"/><path fill=\"#329519\" d=\"M28 44h8v7h11v5H17v-5h11z\"/><path stroke=\"#8dcc90\" stroke-width=\"2\" d=\"m16 30 11-11m-4 15 15-15\"/></svg>",
+  "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\" fill=\"none\"><path fill=\"#ff548a\" d=\"M28 7C9 4 9 21 13 28c-8 12-4 23 8 28l4-13c-7-6-2-13 3-18 5-7 6-13 0-18z\"/><path fill=\"#ffc8b7\" d=\"M27 15c-9 0-12 13-5 19l7-3 2-9z\"/><path stroke=\"#ff8b28\" stroke-width=\"5\" stroke-linecap=\"round\" d=\"m45 11-7 28\"/><path fill=\"#ff8b28\" d=\"m34 34 12 3-5 18-12-3z\"/><path stroke=\"#ffd38c\" stroke-width=\"2\" d=\"m38 38 5 1\"/></svg>",
+  "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\" fill=\"none\"><rect x=\"24\" y=\"14\" width=\"35\" height=\"30\" rx=\"3\" fill=\"#112565\"/><path fill=\"#112565\" d=\"M6 27 15 20h8v24H5V32z\"/><path fill=\"#dff1ff\" d=\"m10 29 7-5h3v11H9z\"/><circle cx=\"15\" cy=\"47\" r=\"7\" fill=\"#112565\"/><circle cx=\"48\" cy=\"47\" r=\"7\" fill=\"#112565\"/><g fill=\"#dce8f5\"><circle cx=\"15\" cy=\"47\" r=\"3\"/><circle cx=\"48\" cy=\"47\" r=\"3\"/></g></svg>",
+  "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\" fill=\"none\"><g fill=\"none\" stroke=\"#ff9910\" stroke-width=\"4\" stroke-linejoin=\"round\"><path d=\"M10 54 14 9h5l5 45M9 14h36v8M14 26h9M13 39h12M44 20v16\"/></g><path fill=\"#ff9910\" d=\"M6 52h24v6H6zm29-15h12v14H32V40zm12 8h9v8H44z\"/><path fill=\"#fff4cf\" d=\"M37 39h7v7h-7z\"/><rect x=\"30\" y=\"52\" width=\"29\" height=\"6\" rx=\"3\" fill=\"#d97800\"/></svg>",
+  "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\" fill=\"none\"><path fill=\"#56287b\" d=\"M54 7c-7-4-18 0-20 8-1 4 0 7 1 10L13 46c-9-2-13 9-6 13 5 4 12 0 12-5l22-22c12 5 23-6 19-16L49 27l-9-3-2-8z\"/><circle cx=\"11\" cy=\"53\" r=\"3\" fill=\"#fff\"/></svg>",
+  "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\" fill=\"none\"><path fill=\"#914121\" stroke=\"#632913\" stroke-width=\"2\" d=\"M20 9h24l-2 9c-1 5 11 9 11 20 0 8-9 13-11 17H22c-2-4-11-9-11-17 0-11 12-15 11-20z\"/><ellipse cx=\"32\" cy=\"9\" rx=\"12\" ry=\"3\" fill=\"#572613\"/><path stroke=\"#f1b873\" stroke-width=\"3\" fill=\"none\" d=\"M16 29h32M13 39h38M21 50h23\"/></svg>",
+  "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\" fill=\"none\"><path stroke=\"#368d1d\" stroke-width=\"3\" fill=\"none\" d=\"M13 57q-1-30 25-46M14 50q7-18 29-20M13 45Q6 29 11 20\"/><g fill=\"#439820\"><ellipse cx=\"29\" cy=\"13\" rx=\"4\" ry=\"7\" transform=\"rotate(50 29 13)\"/><ellipse cx=\"39\" cy=\"11\" rx=\"4\" ry=\"7\" transform=\"rotate(70 39 11)\"/><ellipse cx=\"43\" cy=\"20\" rx=\"4\" ry=\"7\" transform=\"rotate(-35 43 20)\"/><ellipse cx=\"35\" cy=\"25\" rx=\"4\" ry=\"7\" transform=\"rotate(-35 35 25)\"/><ellipse cx=\"45\" cy=\"31\" rx=\"4\" ry=\"7\" transform=\"rotate(70 45 31)\"/><ellipse cx=\"49\" cy=\"41\" rx=\"4\" ry=\"7\" transform=\"rotate(-35 49 41)\"/><ellipse cx=\"37\" cy=\"41\" rx=\"4\" ry=\"7\" transform=\"rotate(-35 37 41)\"/></g></svg>",
+  "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\" fill=\"none\"><path fill=\"#102465\" d=\"m4 34 5-11h17l6 11v16H3V36z\"/><path fill=\"#e5f4ff\" d=\"m11 26-4 9h20l-4-9z\"/><path fill=\"#fff\" d=\"M5 40h25v5H5z\"/><rect x=\"14\" y=\"18\" width=\"8\" height=\"5\" rx=\"1\" fill=\"#102465\"/><g fill=\"#102465\"><circle cx=\"10\" cy=\"50\" r=\"5\"/><circle cx=\"26\" cy=\"50\" r=\"5\"/></g><path fill=\"#fa2638\" d=\"M35 24h23l4 11v15H34V27z\"/><path fill=\"#e5f4ff\" d=\"M49 28h6l4 10H49z\"/><path stroke=\"#fa2638\" stroke-width=\"3\" d=\"M34 17h26m-22-4v8m9-8v8m9-8v8\"/><path fill=\"#fff\" d=\"M37 29h7v13h-7z\"/><g fill=\"#fa2638\"><circle cx=\"40\" cy=\"50\" r=\"5\"/><circle cx=\"57\" cy=\"50\" r=\"5\"/></g></svg>"
 ];
 
 // 編集中の状態（保存データの形式は変更しない）
@@ -58,25 +72,51 @@ function showNotice(s) {
   showNotice.timer = setTimeout(() => getElement('notice').style.display = 'none', 4000)
 }
 jobs.forEach((j, i) => {
+  if (i === 8) return; // 消防は警察と共通のチェック欄にまとめる。
   const l = document.createElement('label');
   l.className = 'job';
   const c = document.createElement('input');
   c.type = 'checkbox';
   c.value = i;
   c.addEventListener('change', handleFormChange);
-  l.append(c, document.createTextNode(j[2] + ' ' + j[0]));
+  const icon = document.createElement('img');
+  icon.className = 'job-icon';
+  icon.alt = '';
+  const illustrationIndexes = [0, 1, 5, 6, 2, 3, 7, 8, 8, 4];
+  icon.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(jobIllustrations[illustrationIndexes[i]]);
+  l.append(c, icon, document.createTextNode(i === 7 ? '警察・消防士' : j[0]));
   getElement('jobs').append(l)
 });
-const getSelectedJobIndexes = () => [...getElement('jobs').querySelectorAll('input:checked')].map(x => Number(x.value));
+const getSelectedJobIndexes = () => [...getElement('jobs').querySelectorAll('input:checked')].flatMap(x => Number(x.value) === 7 ? [7, 8] : [Number(x.value)]);
 function handleFormChange() {
   dirty = true;
   renderLicense();
   getElement('save-state').textContent = '変更内容は未保存です。「受付内容を保存」で保存できます。'
 }
+function japaneseDate(value, era = false) {
+  if (!value) return '';
+  const [year, month, day] = value.split('-').map(Number);
+  return (era && year >= 2019 ? '令和 ' + (year - 2018) : year) + '年 ' + month + '月 ' + day + '日';
+}
 function renderLicense() {
   getElement('lic-name').textContent = getElement('nickname').value.trim() || 'なまえ';
-  getElement('lic-id').textContent = current ? 'ECH 2027-' + String(current).padStart(3, '0') : '受付前';
-  getElement('lic-date').textContent = getElement('date').value.replaceAll('-', ' / ');
+  getElement('lic-name').classList.toggle('long-name', getElement('lic-name').textContent.length > 8);
+  getElement('lic-id').textContent = current ? 'ECH ' + getElement('date').value.replaceAll('-', '') + String(current).padStart(3, '0') : '受付前';
+  const date = getElement('date').value;
+  getElement('lic-date').textContent = japaneseDate(date);
+  getElement('lic-issued-date').textContent = japaneseDate(date, true);
+  getElement('lic-address').textContent = LICENSE_ADDRESS;
+  getElement('lic-birthday').textContent = japaneseDate(getElement('birthday').value, true) + (getElement('birthday').value ? ' 生' : '年　月　日 生');
+  const expiry = getElement('lic-expiry');
+  expiry.replaceChildren();
+  if (date) {
+    const [year, month, day] = date.split('-').map(Number);
+    const lastDay = new Date(year + 1, month, 0).getDate();
+    const yearLabel = document.createElement('strong');
+    yearLabel.textContent = year + 1;
+    const era = year + 1 >= 2019 ? '（令和' + (year + 1 - 2018) + '年）' : '';
+    expiry.append(yearLabel, document.createTextNode(' 年 ' + era + ' ' + month + '月 ' + Math.min(day, lastDay) + '日まで有効'));
+  }
   getElement('photo').replaceChildren();
   if (photo) {
     const img = new Image();
@@ -87,17 +127,27 @@ function renderLicense() {
   } else getElement('photo').textContent = '顔写真';
   const s = getSelectedJobIndexes();
   getElement('qualifications').replaceChildren();
-  jobs.forEach((j, i) => {
+  // 保存済みの職種インデックスは維持し、台紙の表示順だけを合わせる。
+  const qualificationRows = [[0], [1], [4], [5], [9], [2], [3], [6], [7, 8]];
+  qualificationRows.forEach((indexes, rowIndex) => {
+    const earned = indexes.filter(i => s.includes(i));
     const d = document.createElement('div');
-    d.className = 'qual' + (s.includes(i) ? ' earned' : '');
+    d.className = 'qual' + (earned.length ? ' earned' : '');
+    const icon = document.createElement('img');
+    icon.className = 'qual-icon';
+    icon.alt = indexes.length > 1 ? 'パトカーと消防車' : jobs[indexes[0]][0] + 'のイラスト';
+    icon.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(jobIllustrations[rowIndex]);
     const label = document.createElement('span');
-    label.textContent = j[2] + ' ジュニア・' + j[1];
+    label.className = 'qual-text';
+    label.textContent = 'ジュニア・' + (indexes.length > 1 ? 'セーフティヒーロー' : jobs[indexes[0]][1]) + '認定';
     const mark = document.createElement('b');
-    mark.textContent = s.includes(i) ? '認定 ✓' : '—';
-    d.append(label, mark);
-    getElement('qualifications').append(d)
+    mark.className = 'stamp-circle';
+    mark.textContent = earned.length ? '認定' : '';
+    mark.setAttribute('aria-label', earned.length ? '認定済み' : '未認定');
+    d.append(icon, label, mark);
+    getElement('qualifications').append(d);
   });
-  getElement('achievement').textContent = '体験したお仕事 ' + s.length + ' / 10';
+  getElement('achievement').textContent = '体験したお仕事 ' + qualificationRows.filter(indexes => indexes.some(i => s.includes(i))).length + ' / 9';
   getElement('issued').disabled = !current;
 }
 function renderParticipantList() {
@@ -123,10 +173,11 @@ function loadParticipant(r) {
   current = r?.id || null;
   photo = r?.photo || '';
   getElement('nickname').value = r?.name || '';
+  getElement('birthday').value = r?.birthday || '';
   getElement('date').value = r?.date || '2027-03-07';
   getElement('zoom').value = r?.zoom || 1;
   getElement('pos').value = r?.pos ?? 50;
-  [...getElement('jobs').querySelectorAll('input')].forEach(c => c.checked = (r?.jobs || []).includes(Number(c.value)));
+  [...getElement('jobs').querySelectorAll('input')].forEach(c => c.checked = (r?.jobs || []).some(i => i === Number(c.value) || (Number(c.value) === 7 && i === 8)));
   dirty = false;
   getElement('save-state').textContent = r ? '保存済み：参加者 ' + String(r.id).padStart(3, '0') : '新規受付：写真とニックネームを登録してください。';
   renderLicense();
@@ -155,7 +206,7 @@ async function saveParticipant() {
   const id = current || Math.max(0, ...records.map(r => r.id)) + 1;
   const prior = records.find(r => r.id === id);
   const r = {
-    id, name, photo, date: getElement('date').value, zoom: Number(getElement('zoom').value), pos: Number(getElement('pos').value), jobs: getSelectedJobIndexes(), issued: prior?.issued || false
+    id, name, photo, address: LICENSE_ADDRESS, birthday: getElement('birthday').value, date: getElement('date').value, zoom: Number(getElement('zoom').value), pos: Number(getElement('pos').value), jobs: getSelectedJobIndexes(), issued: prior?.issued || false
   };
   records = records.filter(x => x.id !== id).concat(r).sort((a, b) => a.id - b.id);
   try {
@@ -233,7 +284,7 @@ getElement('camera-dialog').addEventListener('cancel', stopCamera);
 
 // 入力・印刷・受け渡しのイベント
 getElement('file').onchange = e => setParticipantPhoto(e.target.files[0]);
-['nickname', 'date', 'zoom', 'pos'].forEach(id => getElement(id).addEventListener('input', handleFormChange));
+['nickname', 'birthday', 'date', 'zoom', 'pos'].forEach(id => getElement(id).addEventListener('input', handleFormChange));
 getElement('search').oninput = renderParticipantList;
 getElement('new').onclick = () => loadParticipant(null);
 getElement('save').onclick = async() => {
@@ -264,7 +315,8 @@ getElement('issued').onclick = async() => {
 getElement('demo').onclick = () => {
   if (!confirmDiscardChanges()) return;
   current = null;
-  getElement('nickname').value = 'はる（見本）';
+  getElement('nickname').value = '越前　太郎';
+  getElement('birthday').value = '';
   getElement('date').value = '2027-03-07';
   const c = document.createElement('canvas');
   c.width = 300;
@@ -321,6 +373,8 @@ function isValidParticipant(r) {
   return r
     && Number.isInteger(r.id) && r.id > 0
     && typeof r.name === 'string' && r.name.trim().length > 0 && r.name.length <= 16
+    && (r.address === undefined || (typeof r.address === 'string' && r.address.length <= 60))
+    && (r.birthday === undefined || r.birthday === '' || (typeof r.birthday === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(r.birthday)))
     && typeof r.photo === 'string'
     && /^data:image\/(jpeg|png);base64,[A-Za-z0-9+/=]+$/.test(r.photo)
     && r.photo.length < 2000000
