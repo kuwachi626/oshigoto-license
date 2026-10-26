@@ -307,6 +307,25 @@ input[type=range] {
   body[data-size=card] .license {
     transform: scale(.359475066, .340157480)
   }
+  body[data-size=business] {
+    width: 55mm;
+    height: 91mm;
+    overflow: hidden
+  }
+  body[data-size=business] .preview-wrap {
+    position: relative;
+    width: 55mm;
+    height: 91mm;
+    overflow: hidden;
+    break-inside: avoid
+  }
+  body[data-size=business] .license {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* 横型のデザインを時計回りに回転し、55 × 91 mm の用紙に収める */
+    transform: translateX(55mm) rotate(90deg) scale(.382152231, .346456693)
+  }
 
 }
 .layout>*,.work>*,.panel {

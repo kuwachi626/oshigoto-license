@@ -290,8 +290,17 @@ getElement('new').onclick = () => loadParticipant(null);
 getElement('save').onclick = async() => {
   if (await saveParticipant())showNotice('保存しました')
 };
-getElement('size').onchange = () => document.body.dataset.size = getElement('size').value;
+function updatePrintSize() {
+  const size = getElement('size').value;
+  document.body.dataset.size = size;
+  getElement('print-page-size').textContent = size === 'business'
+    ? '@page { size: 55mm 91mm; margin: 0; }'
+    : '@page { size: A4 portrait; margin: 15mm; }';
+}
+getElement('size').onchange = updatePrintSize;
+updatePrintSize();
 getElement('print').onclick = async() => {
+  updatePrintSize();
   if (await saveParticipant()) {
     await Promise.all([...getElement('photo').querySelectorAll('img')].map(i => i.decode()));
     window.print()
