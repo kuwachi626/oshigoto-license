@@ -72,6 +72,7 @@ function showNotice(s) {
   showNotice.timer = setTimeout(() => getElement('notice').style.display = 'none', 4000)
 }
 jobs.forEach((j, i) => {
+  if (i === 8) return; // 消防は警察と共通のチェック欄にまとめる。
   const l = document.createElement('label');
   l.className = 'job';
   const c = document.createElement('input');
@@ -83,10 +84,10 @@ jobs.forEach((j, i) => {
   icon.alt = '';
   const illustrationIndexes = [0, 1, 5, 6, 2, 3, 7, 8, 8, 4];
   icon.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(jobIllustrations[illustrationIndexes[i]]);
-  l.append(c, icon, document.createTextNode(j[0]));
+  l.append(c, icon, document.createTextNode(i === 7 ? '警察・消防士' : j[0]));
   getElement('jobs').append(l)
 });
-const getSelectedJobIndexes = () => [...getElement('jobs').querySelectorAll('input:checked')].map(x => Number(x.value));
+const getSelectedJobIndexes = () => [...getElement('jobs').querySelectorAll('input:checked')].flatMap(x => Number(x.value) === 7 ? [7, 8] : [Number(x.value)]);
 function handleFormChange() {
   dirty = true;
   renderLicense();
@@ -139,15 +140,14 @@ function renderLicense() {
     const label = document.createElement('span');
     label.className = 'qual-text';
     label.textContent = 'ジュニア・' + (indexes.length > 1 ? 'セーフティヒーロー' : jobs[indexes[0]][1]) + '認定';
-    if (indexes.length > 1) label.title = '警察・消防は個別に認定：' + (earned.map(i => jobs[i][0]).join('・') || '未認定');
     const mark = document.createElement('b');
     mark.className = 'stamp-circle';
-    mark.textContent = earned.length ? (indexes.length > 1 ? earned.map(i => jobs[i][0] === '消防士' ? '消防' : jobs[i][0]).join('・') : '認定') : '';
-    mark.setAttribute('aria-label', earned.length ? label.title || '認定済み' : '未認定');
+    mark.textContent = earned.length ? '認定' : '';
+    mark.setAttribute('aria-label', earned.length ? '認定済み' : '未認定');
     d.append(icon, label, mark);
     getElement('qualifications').append(d);
   });
-  getElement('achievement').textContent = '体験したお仕事 ' + s.length + ' / 10';
+  getElement('achievement').textContent = '体験したお仕事 ' + qualificationRows.filter(indexes => indexes.some(i => s.includes(i))).length + ' / 9';
   getElement('issued').disabled = !current;
 }
 function renderParticipantList() {
@@ -177,7 +177,7 @@ function loadParticipant(r) {
   getElement('date').value = r?.date || '2027-03-07';
   getElement('zoom').value = r?.zoom || 1;
   getElement('pos').value = r?.pos ?? 50;
-  [...getElement('jobs').querySelectorAll('input')].forEach(c => c.checked = (r?.jobs || []).includes(Number(c.value)));
+  [...getElement('jobs').querySelectorAll('input')].forEach(c => c.checked = (r?.jobs || []).some(i => i === Number(c.value) || (Number(c.value) === 7 && i === 8)));
   dirty = false;
   getElement('save-state').textContent = r ? '保存済み：参加者 ' + String(r.id).padStart(3, '0') : '新規受付：写真とニックネームを登録してください。';
   renderLicense();
