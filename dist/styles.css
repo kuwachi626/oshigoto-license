@@ -348,3 +348,7 @@ input[type=range] {
 .official-seal{font-size:15px;line-height:1.65;} .name.long-name{font-size:16px;}
 
 .fixed-address{margin-top:14px;} .fixed-address p{font-size:14px;line-height:1.7;margin:0;padding:10px;background:#f2f5fa;border-radius:8px;} #lic-address{display:block;white-space:pre-line;font-size:14px;letter-spacing:0;line-height:1.4;padding-top:8px;padding-bottom:8px;}
+
+
+/* 各職種を独立したSVG画像として表示。 */
+.qual-icon{border:0;border-radius:0;width:32px;height:32px;object-fit:contain;display:block;}
