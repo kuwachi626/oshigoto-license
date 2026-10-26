@@ -78,7 +78,12 @@ jobs.forEach((j, i) => {
   c.type = 'checkbox';
   c.value = i;
   c.addEventListener('change', handleFormChange);
-  l.append(c, document.createTextNode(j[2] + ' ' + j[0]));
+  const icon = document.createElement('img');
+  icon.className = 'job-icon';
+  icon.alt = '';
+  const illustrationIndexes = [0, 1, 5, 6, 2, 3, 7, 8, 8, 4];
+  icon.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(jobIllustrations[illustrationIndexes[i]]);
+  l.append(c, icon, document.createTextNode(j[0]));
   getElement('jobs').append(l)
 });
 const getSelectedJobIndexes = () => [...getElement('jobs').querySelectorAll('input:checked')].map(x => Number(x.value));

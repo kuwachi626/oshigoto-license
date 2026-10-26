@@ -358,3 +358,6 @@ input[type=range] {
 
 /* 提供された町章とイベントロゴ。縦横比を維持して表示。 */
 .town-logo{width:66px;height:70px;object-fit:contain;flex:none;} .event-logo{width:68px;height:68px;object-fit:contain;flex:none;margin-left:auto;}
+
+/* 体験チェック一覧も免許証と同じ職種イラストを使う。 */
+.job-icon{width:28px;height:28px;object-fit:contain;flex:none;} .job input{flex:none;}
